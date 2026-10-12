@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to Calculate Percent Change in Excel (and Avoid #DIV/0!) | Spreadsheet Diary</title><meta name="description" content="The percent change formula in Excel and Google Sheets, how to show it as a percentage, handle a zero starting value, and find a share of a total."><link rel="canonical" href="https://spreadsheet-diary.howlane.com/how-to-calculate-percent-change-in-excel/">
+<meta property="og:type" content="article"><meta property="og:title" content="How to Calculate Percent Change in Excel (and Avoid #DIV/0!) | Spreadsheet Diary"><meta property="og:description" content="The percent change formula in Excel and Google Sheets, how to show it as a percentage, handle a zero starting value, and find a share of a total."><meta property="og:url" content="https://spreadsheet-diary.howlane.com/how-to-calculate-percent-change-in-excel/"><meta property="og:site_name" content="Spreadsheet Diary"><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#217346"><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23217346%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2241%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%2226%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20text-anchor%3D%22middle%22%3ESD%3C%2Ftext%3E%3C%2Fsvg%3E"><link rel="alternate" type="application/rss+xml" title="Spreadsheet Diary" href="/feed.xml">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4370274902373682" crossorigin="anonymous"></script><style>:root{--accent:#217346;--fg:#1f1f1f;--muted:#6b6b6b;--line:#e8e8e8;--bg:#fff;--card:#fff;--soft:#f6f6f4;--serif:Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root{--fg:#ececec;--muted:#a3a3a3;--line:#2c2c2c;--bg:#121212;--card:#181818;--soft:#1c1c1c}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5}
+a{color:inherit}img,svg{max-width:100%;display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}.narrow{max-width:700px;margin:0 auto;padding:0 20px}
+header.top{border-bottom:1px solid var(--line);position:sticky;top:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);z-index:5}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:18px;letter-spacing:-.01em}.brand svg{width:34px;height:34px}
+nav a{text-decoration:none;color:var(--muted);margin-left:22px;font-size:15px}nav a:hover{color:var(--fg)}
+.hero{padding:56px 0 36px;border-bottom:1px solid var(--line)}.hero h1{font-family:var(--serif);font-size:clamp(34px,5vw,54px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{font-size:19px;color:var(--muted);margin:0;max-width:640px}.hero .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent);margin-right:8px}
+.feat{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;padding:40px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.feat .cv{border-radius:14px;overflow:hidden;aspect-ratio:16/9}.feat .cv svg{width:100%;height:100%}
+.feat h2{font-family:var(--serif);font-size:32px;line-height:1.2;margin:8px 0 12px;letter-spacing:-.01em}.feat p{color:var(--muted);font-size:17px;margin:0 0 14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.meta{font-size:14px;color:var(--muted)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;padding:36px 0 64px}
+.card{text-decoration:none;display:flex;flex-direction:column;gap:10px}.card .cv{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--soft)}.card .cv svg{width:100%;height:100%}
+.card h3{font-family:var(--serif);font-size:22px;line-height:1.25;margin:2px 0 0}.card p{margin:0;color:var(--muted);font-size:15px}
+.card:hover h3,.feat:hover h2{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.sec-t{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:36px;margin:0}
+article.post{padding:48px 0 24px}article.post h1{font-family:var(--serif);font-size:clamp(32px,4.6vw,46px);line-height:1.15;letter-spacing:-.02em;margin:10px 0 14px}
+.sub{font-size:21px;color:var(--muted);line-height:1.45;margin:0 0 24px;font-family:var(--serif)}
+.byline{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:32px}.byline svg{width:42px;height:42px}.byline b{display:block;font-size:15px}
+.pcover{border-radius:14px;overflow:hidden;aspect-ratio:21/9;margin:0 0 36px}.pcover svg{width:100%;height:100%}
+.body{font-family:var(--serif);font-size:20px;line-height:1.72}.body p{margin:0 0 1.25em}.body h2{font-family:var(--sans);font-size:26px;line-height:1.3;margin:1.8em 0 .6em;letter-spacing:-.01em}.body h3{font-family:var(--sans);font-size:21px;margin:1.5em 0 .5em}
+.body ul,.body ol{padding-left:1.3em;margin:0 0 1.25em}.body li{margin:.35em 0}.body a{color:var(--accent);text-underline-offset:3px}
+.body blockquote{margin:1.5em 0;padding:4px 0 4px 20px;border-left:3px solid var(--accent);color:var(--muted);font-style:italic}
+.body table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:16px;line-height:1.45;margin:0 0 1.5em}.body th,.body td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}.body th{font-weight:600;background:var(--soft)}
+.body code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;background:var(--soft);padding:2px 6px;border-radius:5px}.body pre{background:var(--soft);padding:16px 18px;border-radius:10px;overflow-x:auto;font-size:15px;line-height:1.55}.body pre code{background:none;padding:0}
+.note{font-family:var(--sans);font-size:15px;background:var(--soft);border-radius:12px;padding:16px 18px;color:var(--muted);margin:28px 0}
+.src{font-family:var(--sans);font-size:15px;margin:32px 0 0;padding-top:20px;border-top:1px solid var(--line)}.src h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px}.src ol{padding-left:1.2em;margin:0}.src li{margin:6px 0;word-break:break-word}.src a{color:var(--accent)}
+.tags{margin:28px 0 0;display:flex;gap:8px;flex-wrap:wrap}.tags span{font-size:14px;background:var(--soft);border-radius:999px;padding:6px 14px}
+.more{border-top:1px solid var(--line);margin-top:48px}
+.page{padding:48px 0 64px}.page h1{font-family:var(--serif);font-size:42px;margin:0 0 20px}.page .body{font-size:19px}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}footer a{color:var(--muted);text-decoration:none;margin-right:16px}
+@media (max-width:760px){.body table{display:block;overflow-x:auto}.body th,.body td{white-space:nowrap}.feat{grid-template-columns:1fr;gap:18px}nav a{margin-left:14px}.body{font-size:18px}.hero{padding:36px 0 24px}}</style><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"How to Calculate Percent Change in Excel (and Avoid #DIV/0!)","description":"The percent change formula in Excel and Google Sheets, how to show it as a percentage, handle a zero starting value, and find a share of a total.","datePublished":"2026-10-11","dateModified":"2026-10-11","author":{"@type":"Organization","name":"Spreadsheet Diary"},"publisher":{"@type":"Organization","name":"Spreadsheet Diary"},"mainEntityOfPage":"https://spreadsheet-diary.howlane.com/how-to-calculate-percent-change-in-excel/","keywords":"excel, google sheets, formulas, percentages"}</script></head><body>
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#217346"/><text x="32" y="41" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">SD</text></svg><span>Spreadsheet Diary</span></a><nav><a href="/">Home</a><a href="/about/">About</a><a href="/feed.xml">RSS</a></nav></div></header>
+<main><article class="post narrow"><span class="tag">excel</span><h1>How to Calculate Percent Change in Excel (and Avoid #DIV/0!)</h1><p class="sub">The percent change formula in Excel and Google Sheets, how to show it as a percentage, handle a zero starting value, and find a share of a total.</p>
+<div class="byline"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#217346"/><text x="32" y="41" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">SD</text></svg><div><b>Spreadsheet Diary</b><span class="meta">Oct 11, 2026 · 4 min read</span></div></div>
+<div class="pcover"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><defs><linearGradient id="g8147" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(147 65% 92%)"/><stop offset="1" stop-color="hsl(172 55% 80%)"/></linearGradient></defs><rect width="1200" height="600" fill="url(#g8147)"/><circle cx="793" cy="105" r="247" fill="hsl(167 60% 50%)" opacity="0.25"/><circle cx="976" cy="588" r="125" fill="hsl(144 60% 38%)" opacity="0.20"/><circle cx="741" cy="59" r="79" fill="hsl(149 60% 48%)" opacity="0.33"/><circle cx="838" cy="93" r="230" fill="hsl(142 60% 62%)" opacity="0.20"/><circle cx="310" cy="165" r="138" fill="hsl(124 60% 59%)" opacity="0.32"/><circle cx="818" cy="168" r="212" fill="hsl(166 60% 42%)" opacity="0.22"/><circle cx="937" cy="273" r="172" fill="hsl(155 60% 42%)" opacity="0.17"/></svg></div>
+<div class="body"><p>&quot;Sales are up 25 percent&quot; is one of the most common sentences in any office report, and one of the easiest to get wrong in a spreadsheet. The formula itself is short. The trouble comes from three places: dividing by the wrong number, a starting value of zero, and confusing percent change with percentage points. This post walks through each one with a small table you can rebuild in a minute.</p>
+<h2>The percent change formula</h2>
+<p>Microsoft&#39;s guide to calculating percentages describes the method in one sentence: subtract the original value from the new value, then divide the result by the original value. In cell terms, with the old number in B2 and the new number in C2:</p>
+<pre><code>=(C2-B2)/B2
+</code></pre>
+<p>Microsoft&#39;s own example uses earnings of $2,342 in November and $2,500 in December. The formula <code>=(2500-2342)/2342</code> returns 0.06746, which displays as 6.75% once you apply the Percent Style button on the Home tab. The same page then goes from $2,500 in December to $2,425 in January: <code>=(2425-2500)/2500</code> returns -0.03, or -3.00%. A negative result simply means a decrease.</p>
+<p>The part people get wrong is the denominator. Always divide by the <strong>old</strong> value, the one you are measuring change from. Dividing by the new value answers a different question and gives a different number.</p>
+<h2>A worked example</h2>
+<p>Here is a small regional sales table. Column D uses the formula above, filled down from D2 to D5.</p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Last year (B)</th>
+<th>This year (C)</th>
+<th>Change (D)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>North</td>
+<td>4,000</td>
+<td>5,000</td>
+<td>25.00%</td>
+</tr>
+<tr>
+<td>South</td>
+<td>5,000</td>
+<td>4,000</td>
+<td>-20.00%</td>
+</tr>
+<tr>
+<td>East</td>
+<td>2,500</td>
+<td>2,500</td>
+<td>0.00%</td>
+</tr>
+<tr>
+<td>West</td>
+<td>0</td>
+<td>1,200</td>
+<td>#DIV/0!</td>
+</tr>
+</tbody></table>
+<p>Two things stand out.</p>
+<p>First, North and South moved by the same 1,000 units in opposite directions, but the percentages are not mirror images. Going from 4,000 to 5,000 is a 25 percent increase, while going from 5,000 to 4,000 is a 20 percent decrease, because each one divides by a different starting value. This is also why a 25 percent rise followed by a 20 percent fall brings you back exactly where you started: 4,000 times 1.25 is 5,000, and 5,000 times 0.80 is 4,000.</p>
+<p>Second, West shows an error. That region had no sales last year, so the formula tries to divide by zero.</p>
+<p>A shorter version of the same formula, <code>=C2/B2-1</code>, returns identical results for the first three rows and the same error for West. Use whichever one you find easier to read.</p>
+<h2>Handling a zero or blank starting value</h2>
+<p>Microsoft&#39;s documentation on the #DIV/0! error explains that Excel shows it when a number is divided by zero, including when a formula refers to a cell that contains 0 or is blank. A percent change from zero is not a meaningful number, so the right fix is to show something more useful than an error.</p>
+<p>Microsoft&#39;s suggested approach is to test the denominator with IF first. Applied to this table:</p>
+<pre><code>=IF(B2,(C2-B2)/B2,&quot;New&quot;)
+</code></pre>
+<p>When B2 holds any nonzero number, IF treats it as true and calculates the change. When B2 is 0 or empty, the formula returns the word &quot;New&quot; instead. In the table above, North still shows 25 percent and West now shows &quot;New.&quot;</p>
+<p>You can also wrap the formula in IFERROR:</p>
+<pre><code>=IFERROR((C2-B2)/B2,&quot;New&quot;)
+</code></pre>
+<p>This gives the same results here. Microsoft adds a warning worth taking seriously: IFERROR is a blanket error handler that hides every error, not just division by zero. If someone types &quot;5,000 units&quot; into C2 by mistake, IFERROR quietly shows &quot;New&quot; for that row too, while the IF version shows #VALUE! and flags the problem. The IF version only reacts to the denominator, so it is the safer choice when you want other mistakes to stay visible.</p>
+<h2>Percent of a total</h2>
+<p>The other common percentage question is &quot;what share of the total is this?&quot; Put the total in its own cell, for example <code>=SUM(C2:C5)</code> in C6, which gives 12,700 for this year&#39;s column. Then divide each region by it:</p>
+<pre><code>=C2/$C$6
+</code></pre>
+<p>The dollar signs lock the reference to C6, so the formula keeps pointing at the total when you fill it down. The results are 39.37% for North, 31.50% for South, 19.69% for East and 9.45% for West. Those rounded figures add up to 100.01%, which is normal rounding noise. If a report must total exactly 100, round each share deliberately and adjust the largest one, rather than assuming displayed percentages will sum cleanly.</p>
+<p>Microsoft&#39;s page shows the same idea with a simpler example: 42 correct answers out of 50 is <code>=42/50</code>, or 84 percent.</p>
+<h2>Percent change versus percentage points</h2>
+<p>When the values you compare are already percentages, be careful with wording. If a profit margin goes from 10 percent to 12 percent, it rose by <strong>2 percentage points</strong>. Its percent change, using the same formula, is <code>=(0.12-0.10)/0.10</code>, which is 0.2, or a <strong>20 percent</strong> increase. Both statements are correct, but they describe different things, and mixing them up can make a small change sound large or a large one sound small. Say which one you mean in the label.</p>
+<h2>Quick checklist before you share the numbers</h2>
+<ol>
+<li>Divide by the old value, not the new one.</li>
+<li>Apply Percent Style instead of multiplying by 100, so the cell still holds a true fraction that other formulas can use.</li>
+<li>Decide what a zero starting value should display, and use IF to handle it.</li>
+<li>Use dollar signs on the total cell when calculating shares.</li>
+<li>Label percentage points as points.</li>
+</ol>
+<h2>Key takeaways</h2>
+<ul>
+<li>Percent change is (new minus old) divided by old; in Excel that is <code>=(C2-B2)/B2</code>, formatted with Percent Style.</li>
+<li>Equal changes up and down do not give equal percentages, because each divides by its own starting value.</li>
+<li>A zero or blank starting value causes #DIV/0!; <code>=IF(B2,(C2-B2)/B2,&quot;New&quot;)</code> handles it without hiding other errors.</li>
+<li>IFERROR hides all errors, so use it only once you know the formula is otherwise correct.</li>
+<li>A change from 10 percent to 12 percent is 2 percentage points, or a 20 percent increase.</li>
+</ul>
+</div>
+<section class="src"><h2>Sources</h2><ol><li><a href="https://support.microsoft.com/en-us/excel/calculate-percentages" rel="noopener" target="_blank">Microsoft Support, Calculate percentages</a></li><li><a href="https://support.microsoft.com/en-us/excel/how-to-correct-a-div-0-error" rel="noopener" target="_blank">Microsoft Support, How to correct a #DIV/0! error</a></li></ol></section>
+<div class="tags"><span>excel</span><span>google sheets</span><span>formulas</span><span>percentages</span></div></article>
+<section class="more"><div class="wrap"><h2 class="sec-t">More from Spreadsheet Diary</h2><div class="list"><a class="card" href="/sumif-vs-sumifs-how-to-sum-with-conditions/"><div class="cv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><defs><linearGradient id="g2809" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(147 65% 92%)"/><stop offset="1" stop-color="hsl(172 55% 80%)"/></linearGradient></defs><rect width="1200" height="675" fill="url(#g2809)"/><path d="M0 387 Q 600 335 1200 413 L 1200 675 L 0 675 Z" fill="hsl(152 60% 61%)" opacity="0.14"/><path d="M0 342 Q 600 281 1200 372 L 1200 675 L 0 675 Z" fill="hsl(145 60% 49%)" opacity="0.17"/><path d="M0 348 Q 600 244 1200 400 L 1200 675 L 0 675 Z" fill="hsl(161 60% 39%)" opacity="0.15"/><path d="M0 362 Q 600 161 1200 463 L 1200 675 L 0 675 Z" fill="hsl(151 60% 52%)" opacity="0.17"/><path d="M0 434 Q 600 217 1200 542 L 1200 675 L 0 675 Z" fill="hsl(149 60% 44%)" opacity="0.07"/><path d="M0 487 Q 600 315 1200 573 L 1200 675 L 0 675 Z" fill="hsl(128 60% 49%)" opacity="0.18"/><path d="M0 641 Q 600 387 1200 768 L 1200 675 L 0 675 Z" fill="hsl(122 60% 35%)" opacity="0.12"/></svg></div><div><span class="tag">excel</span><h3>SUMIF vs SUMIFS, How to Sum With One or More Conditions</h3><p>How SUMIF and SUMIFS add only the rows you want, why their argument order differs, and how to sum by date range, person, and channel.</p><div class="meta">Oct 11, 2026 · 4 min read</div></div></a><a class="card" href="/cleaning-up-a-messy-sales-sheet/"><div class="cv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><defs><linearGradient id="g4864" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(147 65% 92%)"/><stop offset="1" stop-color="hsl(172 55% 80%)"/></linearGradient></defs><rect width="1200" height="675" fill="url(#g4864)"/><path d="M0 570 Q 600 386 1200 662 L 1200 675 L 0 675 Z" fill="hsl(137 60% 61%)" opacity="0.07"/><path d="M0 136 Q 600 47 1200 181 L 1200 675 L 0 675 Z" fill="hsl(140 60% 64%)" opacity="0.14"/><path d="M0 442 Q 600 381 1200 473 L 1200 675 L 0 675 Z" fill="hsl(134 60% 41%)" opacity="0.12"/><path d="M0 479 Q 600 376 1200 530 L 1200 675 L 0 675 Z" fill="hsl(122 60% 60%)" opacity="0.09"/><path d="M0 193 Q 600 -31 1200 305 L 1200 675 L 0 675 Z" fill="hsl(157 60% 38%)" opacity="0.10"/><path d="M0 327 Q 600 181 1200 400 L 1200 675 L 0 675 Z" fill="hsl(129 60% 60%)" opacity="0.17"/><path d="M0 195 Q 600 -8 1200 296 L 1200 675 L 0 675 Z" fill="hsl(153 60% 48%)" opacity="0.07"/></svg></div><div><span class="tag">excel</span><h3>Cleaning Up a Messy Sales Sheet</h3><p>A step-by-step method for finding and removing duplicate rows and extra spaces in a sales spreadsheet, based on official Excel documentation.</p><div class="meta">Oct 9, 2026 · 4 min read</div></div></a><a class="card" href="/date-formulas-for-deadlines-and-workdays/"><div class="cv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><defs><linearGradient id="g9509" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(147 65% 92%)"/><stop offset="1" stop-color="hsl(172 55% 80%)"/></linearGradient></defs><rect width="1200" height="675" fill="url(#g9509)"/><circle cx="38" cy="283" r="151" fill="hsl(171 60% 40%)" opacity="0.34"/><circle cx="878" cy="139" r="103" fill="hsl(170 60% 58%)" opacity="0.19"/><circle cx="886" cy="449" r="120" fill="hsl(158 60% 55%)" opacity="0.18"/><circle cx="186" cy="213" r="185" fill="hsl(131 60% 61%)" opacity="0.34"/><circle cx="441" cy="10" r="259" fill="hsl(129 60% 50%)" opacity="0.35"/><circle cx="750" cy="603" r="198" fill="hsl(128 60% 52%)" opacity="0.22"/><circle cx="238" cy="633" r="147" fill="hsl(167 60% 60%)" opacity="0.29"/></svg></div><div><span class="tag">excel</span><h3>Date Formulas for Deadlines and Workdays</h3><p>How DATEDIF, NETWORKDAYS, and EDATE work in Excel, with each official example re-checked against a plain Python date calculation.</p><div class="meta">Oct 9, 2026 · 4 min read</div></div></a></div></div></section></main>
+<footer><div class="wrap"><div>&copy; 2026 Spreadsheet Diary · A <a href="https://howlane.com/">Howlane</a> site</div><div><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/feed.xml">RSS</a></div></div></footer>
+</body></html>

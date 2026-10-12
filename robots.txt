@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://spreadsheet-diary.howlane.com/sitemap.xml
